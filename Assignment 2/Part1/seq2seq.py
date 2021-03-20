@@ -66,7 +66,7 @@ class EncoderRNN(nn.Module):
 
         self.lstm = nn.LSTM(input_size=hidden_size,
                             hidden_size=hidden_size, num_layers=num_layers)
-        
+
         """
          The input should be transformed to a vector that can be fed to the network.
          The nn.Embedding layer takes 2 arguments:
@@ -75,32 +75,32 @@ class EncoderRNN(nn.Module):
          The layer converts the input input tensor to a hidden_sized dimensional 1d vector.
         """
 
-        self.embedding = nn.Embedding(input_size, embedding_dim=hidden_size)
-
-        # The LSTM layer for the input
-        """
-         For nn.LSTM, same input_size & hidden_size is chosen.
-        :param input_size: The size of the input vocabulary
-        :param hidden_size: The hidden size of the RNN.
-        """
-        
-        self.lstm = nn.LSTM(input_size=hidden_size, hidden_size=hidden_size, num_layers=num_layers)
+        # self.embedding = nn.Embedding(input_size, embedding_dim=hidden_size)
+        # 
+        # # The LSTM layer for the input
+        # """
+        #  For nn.LSTM, same input_size & hidden_size is chosen.
+        # :param input_size: The size of the input vocabulary
+        # :param hidden_size: The hidden size of the RNN.
+        # """
+        #
+        # self.lstm = nn.LSTM(input_size=hidden_size, hidden_size=hidden_size, num_layers=num_layers)
 
 
     def forward(self, input, hidden,bidirectional=False):
 
-        
-        
+
+
         ##Write your code below
         #Feed the input to the embedding layer defined above and convert it to size (1,1,hidden size)
         embedded = #CODE_BLANK_1
         rnn_input = embedded
-            
+
             # The following descriptions of shapes and tensors are extracted from the official Pytorch documentation:
             # output-shape: (seq_len, batch, num_directions * hidden_size): tensor containing the output features (h_t) from the last layer of the LSTM
             # h_n of shape (num_layers * num_directions, batch, hidden_size): tensor containing the hidden state
             # c_n of shape (num_layers * num_directions, batch, hidden_size): tensor containing the cell state
-        
+
         #call the lstm layer.
         output, (h_n, c_n) = #CODE_BLANK_2
         # return the ouput,(hidden_State,cell_State)
@@ -145,7 +145,7 @@ class DecoderRNN(nn.Module):
 
          # return the ouput,(hidden_State,cell_State)
         return output, (h_n, c_n)
-    
+
     #Function to initialize the hidden state and cell states for decoder.
     def initHidden(self,device):
         """
@@ -155,7 +155,7 @@ class DecoderRNN(nn.Module):
         return [torch.zeros(self.num_layers, 1, self.hidden_size, device=device),
                 torch.zeros(self.num_layers, 1, self.hidden_size, device=device)]
 """
-Liner Function serves as a bridge between the encoder and decoder. It will convert the encoder output to desired 
+Liner Function serves as a bridge between the encoder and decoder. It will convert the encoder output to desired
 dimensions for the decoder input.
 """
 class Linear(nn.Module):
@@ -180,8 +180,8 @@ class Linear(nn.Module):
         #Converts the Bidirectional output of the encoder to desired size of the decor input.
         self.linear_connection_op = nn.Linear(num_directions * hidden_size_encoder, hidden_size_decoder)
         """
-        Check if the model is bidirectional. 
-        Our model is not a bidirectional model so the value will be 
+        Check if the model is bidirectional.
+        Our model is not a bidirectional model so the value will be
         false and no operation takes place here
         """
         self.connection_possibility_status = num_directions * hidden_size_encoder == hidden_size_decoder
@@ -193,6 +193,3 @@ class Linear(nn.Module):
         else:
             return #code_blank4
         pass
-
-
-
