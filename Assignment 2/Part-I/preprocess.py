@@ -25,7 +25,7 @@ def preprocess(sentence: str, hindi=False) -> str:
     sentence = ' '.join(sentence.split())
     ## Write your code below
     #convert the sentence into lower cases
-    sentence = #CODE_BLANK_1. #Remove this comment before writing code here.
+    sentence = #CODE_BLANK_1. #Remove this comment before writing code here. imo: .lowercase?
     # remove accented chars such as in cafe
     sentence = unidecode.unidecode(sentence)
     # remove punctuation
@@ -37,13 +37,13 @@ def preprocess(sentence: str, hindi=False) -> str:
         sentence = re.sub("[२३०८१५७९४६]", "", sentence)
     ##Write your code below
     #remove trailing and leading extra white spaces
-    sentence = #CODE_BLANK_2
+    sentence = #CODE_BLANK_2 ### imo: use trim
     ##Write your code below
     #Remove any excess white spaces from within the sentence
-    sentence = #CODE_BLANK_3
+    sentence = #CODE_BLANK_3 ?
     ##Write your code below
     #append the prepend the SOS token and append the EOS token to the sentence with spaces.
-    sentence = #CODE_BLANK_4
+    sentence = #CODE_BLANK_4 ?
 
     ''' for an expected input of sentence = ' hi, my name is  sam  ', output will be 'hi my name is sam'
     '''
@@ -62,6 +62,7 @@ def get_vocab(lang: pd.Series) -> List:
        output should be 
        ['do', 'know', 'like', 'my', 'name', 'some', 'tea', 'would', 'you']
     '''
+    # pass to be removed, add return , refer to code from last sem, not sklearn 
     pass
 
 #(0.5 marks)
@@ -71,12 +72,14 @@ def token_idx(words: List) -> Dict:
     '''
         input of words ['a','b','c'] -> output should be {'a': 1, 'b' : 2, 'c': 3}
     '''
+    # remove pass, dict 
     pass
 
 #(0.5 marks)
 #Helper 3: Creates a dictionary for index to word mapping. Used in decoding
 def idx_token(wor2idx: Dict) -> Dict:
     #Write your code here and remove the next line which says pass before you submit
+    # reverse of the prev function 
     pass
  
 
