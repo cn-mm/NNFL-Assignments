@@ -25,7 +25,7 @@ def preprocess(sentence: str, hindi=False) -> str:
     sentence = ' '.join(sentence.split())
     ## Write your code below
     #convert the sentence into lower cases
-    sentence = #CODE_BLANK_1. #Remove this comment before writing code here. imo: .lowercase?
+    sentence = sentence.lower() #CODE_BLANK_1. 
     # remove accented chars such as in cafe
     sentence = unidecode.unidecode(sentence)
     # remove punctuation
@@ -37,13 +37,13 @@ def preprocess(sentence: str, hindi=False) -> str:
         sentence = re.sub("[२३०८१५७९४६]", "", sentence)
     ##Write your code below
     #remove trailing and leading extra white spaces
-    sentence = #CODE_BLANK_2 ### imo: use trim
+    sentence = sentence.strip() #CODE_BLANK_2 ### imo: use trim
     ##Write your code below
     #Remove any excess white spaces from within the sentence
-    sentence = #CODE_BLANK_3 ?
+    sentence = re.sub(' +', ' ', sentence) #CODE_BLANK_3 ?
     ##Write your code below
     #append the prepend the SOS token and append the EOS token to the sentence with spaces.
-    sentence = #CODE_BLANK_4 ?
+    sentence = "SOS " + sentence + " EOS" #CODE_BLANK_4 
 
     ''' for an expected input of sentence = ' hi, my name is  sam  ', output will be 'hi my name is sam'
     '''
@@ -62,8 +62,12 @@ def get_vocab(lang: pd.Series) -> List:
        output should be 
        ['do', 'know', 'like', 'my', 'name', 'some', 'tea', 'would', 'you']
     '''
-    # pass to be removed, add return , refer to code from last sem, not sklearn 
-    pass
+    vocab_set = set([])
+    for elem in lang:
+      for word in elem.split():
+        vocab_set.add(word)
+    return list(vocab_set)
+    # pass
 
 #(0.5 marks)
 #Helper 2: Creates a dictionary with token-> index mapping. Used in encoding.
@@ -72,15 +76,16 @@ def token_idx(words: List) -> Dict:
     '''
         input of words ['a','b','c'] -> output should be {'a': 1, 'b' : 2, 'c': 3}
     '''
-    # remove pass, dict 
-    pass
+    return {word: ind for ind, word in enumerate(words)}
+    # pass
 
 #(0.5 marks)
 #Helper 3: Creates a dictionary for index to word mapping. Used in decoding
 def idx_token(wor2idx: Dict) -> Dict:
     #Write your code here and remove the next line which says pass before you submit
     # reverse of the prev function 
-    pass
+    return {ind:word for word,ind in wor2idx.items()}
+    # pass
  
 
 #Helper 4: Pads sequences to a particular length so that all the sequences are of same length in a batch.
@@ -114,7 +119,7 @@ class Data(Dataset):
         return x, y
 
  #(1 mark)
-#Main function being called when we need to retrieve inout batch, output batch and DataLoader objects.
+#Main function being called when we need to retrieve input batch, output batch and DataLoader objects.
 def get_dataset(batch_size=2, types="train", shuffle=True, num_workers=1, pin_memory=False, drop_last=True):
     #Read the file 
     lines = pd.read_csv('Hindi_English_Truncated_Corpus.csv', encoding='utf-8')
@@ -122,48 +127,48 @@ def get_dataset(batch_size=2, types="train", shuffle=True, num_workers=1, pin_me
     lines = lines[lines['source'] == 'ted']  # Remove other sources
     ## Write your code below
     #Remove duplicate lines
-    #CODE_BLANK_1
+    lines.drop_duplicates() #CODE_BLANK_1
     
     #Random Sample of 25000 sentences
     lines = lines.sample(n=int(config["samples"]), random_state=42)
     ##Write your code below
     #Call preprocess functions on all english sentences
-    #CODE_BLANK_2
+    lines['english_sentence'] = lines['english_sentence'].apply(preprocess) #CODE_BLANK_2
 
     #Call preprocess functions on all hindi sentences
-    #CODE_BLANK_3
+    lines['hindi_sentence'] = lines['hindi_sentence'].apply(preprocess,hindi = True) #CODE_BLANK_3
 
     #Retrieve length of each english sentence and store it in the lines dataframe under a new column "length_english_sentence"
-    #CODE_BLANK_4
+    lines['length_english_sentence'] = lines['english_sentence'].apply(lambda x: len(x.split())) #CODE_BLANK_4
 
     #Retrieve length of each hindi sentences and store it in the lines dataframe under a new column "length_hindi_sentence"
-    #CODE_BLANK_5
+    lines['length_hindi_sentence'] = lines['hindi_sentence'].apply(lambda x: len(x.split())) #CODE_BLANK_5
 
-    #Remove all the sentences with length less than max_length
-    #CODE_BLANK_6
-    #CODE_BLANK_7
+    #Remove all the sentences with lengths greater than or equal to max_length
+    lines = lines[lines['length_english_sentence']< 20] #CODE_BLANK_6
+    lines = lines[lines['length_hindi_sentence']<20] #CODE_BLANK_7
 
     #Get List of english words
-    # CODE_BLANK_8      
+    list_eng_words = get_vocab(lines['english_sentence']) # CODE_BLANK_8      
     
     #Get List of Hindi Words
-    #CODE_BLANK_9
+    lis_hindi_words = get_vocab(lines['hindi_sentence']) #CODE_BLANK_9
 
     #Get word2idx_eng for english
-    #CODE_BLANK_10
+    word2idx_eng = token_idx(list_eng_words) #CODE_BLANK_10
     
     #Get word2idx_hin for hindi
-    #CODE_BLANK_11
+    word2idx_hin = token_idx(lis_hindi_words) #CODE_BLANK_11
 
     #get idx2word_eng for english
-    #CODE_BLANK_12
+    idx2word_eng = idx_token(word2idx_eng) #CODE_BLANK_12
 
     #get idx2word_hin for hindi
-    #CODE_BLANK_13
+    idx2word_hin = idx_token(word2idx_hin) #CODE_BLANK_13
     
     #Convert the sentences to tensors using dictionaries created above
     #English tensor in input_tensor
-#     CODE_BLANK_14
+    #CODE_BLANK_14
     #Hindi tensor in output_tensor
     #CODE_BLANK_15
 
