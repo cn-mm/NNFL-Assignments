@@ -93,7 +93,8 @@ class EncoderRNN(nn.Module):
 
         ##Write your code below
         #Feed the input to the embedding layer defined above and convert it to size (1,1,hidden size)
-        embedded = #CODE_BLANK_1
+        embedded = self.embedding(input, hidden) 
+        embedded = embedded.view(1, 1, -1)#CODE_BLANK_1
         rnn_input = embedded
 
             # The following descriptions of shapes and tensors are extracted from the official Pytorch documentation:
@@ -101,10 +102,11 @@ class EncoderRNN(nn.Module):
             # h_n of shape (num_layers * num_directions, batch, hidden_size): tensor containing the hidden state
             # c_n of shape (num_layers * num_directions, batch, hidden_size): tensor containing the cell state
 
-        #call the lstm layer.
-        output, (h_n, c_n) = #CODE_BLANK_2
+        #call the lstm layer. 
+        # CHECK         
+        output, (h_n, c_n) = self.lstm(rnn_input) #CODE_BLANK_2
         # return the ouput,(hidden_State,cell_State)
-        return #CODEBLANK3
+        return output, (h_n, c_n) #CODEBLANK3
 
     #Function to initialize the hidden input for the first lstm cell.
     def initHidden(self,device):
@@ -137,11 +139,12 @@ class DecoderRNN(nn.Module):
         ##Write your code below
 
         #Call the embedding layer defined above and convert it to shape (1,1,hidden_Size)
-        output = #CODE_BLANK_1
+        output = self.embedding(input, hidden) 
+        output = output.view(1, 1, -1) #CODE_BLANK_1
         #Call the Lstm layer defined above
-        output, (h_n, c_n) = #CODE_BLANK_2
+        output, (h_n, c_n) = self.lstm(output) #CODE_BLANK_2
         #Call the output layer on the first element of the output
-        output = #CODE_BLANK_3
+        output = self.out(output) #CODE_BLANK_3
 
          # return the ouput,(hidden_State,cell_State)
         return output, (h_n, c_n)
@@ -173,9 +176,9 @@ class Linear(nn.Module):
         super(Linear, self).__init__()
         ##Write your code below
         #Initialize the variables
-        self.bidirectional = #CODE_BLANK_1
+        self.bidirectional = bidirectional #CODE_BLANK_1
         #Value is bidirectional + 1
-        num_directions = ##CODE_BLANK_2
+        num_directions = bidirectional+1 ##CODE_BLANK_2
 
         #Converts the Bidirectional output of the encoder to desired size of the decor input.
         self.linear_connection_op = nn.Linear(num_directions * hidden_size_encoder, hidden_size_decoder)
@@ -189,7 +192,7 @@ class Linear(nn.Module):
     def forward(self, input):
         #Write code here and rempve the line containing pass
         if self.connection_possibility_status:
-            return #code_blank3
+            return input #code_blank3
         else:
-            return #code_blank4
+            return self.linear_connection_op(input) #code_blank4
         pass
