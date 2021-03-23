@@ -76,7 +76,10 @@ def token_idx(words: List) -> Dict:
     '''
         input of words ['a','b','c'] -> output should be {'a': 1, 'b' : 2, 'c': 3}
     '''
-    return {word: ind for ind, word in enumerate(words)}
+    dictionary = {"SOS" : 1, "EOS" : 2}
+    for ind, word in enumerate(words):
+      dictionary[word] = id + 2
+    return dictionary
     # pass
 
 #(0.5 marks)
@@ -169,9 +172,9 @@ def get_dataset(batch_size=2, types="train", shuffle=True, num_workers=1, pin_me
     #Convert the sentences to tensors using dictionaries created above
     #English tensor in input_tensor
     # NEED TO CORRECT THIS 
-    input_tensor = convert_to_tensor(word2idx_eng, lines['english_sentences'])#CODE_BLANK_14 
+    input_tensor = torch.tensor(convert_to_tensor(word2idx_eng, lines['english_sentences']))#CODE_BLANK_14 
     #Hindi tensor in output_tensor
-    output_tensor = convert_to_tensor(word2idx_hin, lines['hindi_sentences'])# #CODE_BLANK_15
+    output_tensor = torch.tensor(convert_to_tensor(word2idx_hin, lines['hindi_sentences'])) #CODE_BLANK_15
 
     #Calling the split function and doing a 80-20 split on the input and target tensors.
     input_tensor_train, input_tensor_val, target_tensor_train, target_tensor_val = train_test_split(

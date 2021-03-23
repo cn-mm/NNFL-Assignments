@@ -68,7 +68,7 @@ def train(input_tensor, target_tensor, mask_input, mask_target, encoder, decoder
 
         # only return the hidden and cell states for the last layer and pass it to the decoder
         #Assign the last encoder hidden states
-        hn, cn = #CODE_BLANK_4
+        hn, cn = encoder_hidden #CODE_BLANK_4
 
         #Reshaping and selecting the last hidden states.
         encoder_hn_last_layer = hn[-1].view(1,1,-1)
@@ -88,10 +88,11 @@ def train(input_tensor, target_tensor, mask_input, mask_target, encoder, decoder
     #################
 
     #Assign the decoder input as a torch tensor with value [SOS]
-    decoder_input = #CODE_BLANK_5
+    # CHECK 
+    decoder_input = torch.tensor([SOS_token]) #CODE_BLANK_5
 
     #Assign the initial decoder hidden states as the last hidden states of encoder retrieved above
-    decoder_hiddens = #CODE_BLANK_6
+    decoder_hiddens = (hn, cn) #CODE_BLANK_6
 
     # teacher_forcing uses the real target outputs as the next input
     # rather than using the decoder's prediction.
@@ -119,7 +120,7 @@ def train(input_tensor, target_tensor, mask_input, mask_target, encoder, decoder
             for di in range(target_length):
 
                 #Call the decoder object and pass the decoder input and hidden state as the hidden state
-                decoder_output, decoder_hidden = #CODE_BLANK_7
+                decoder_output, decoder_hidden = decoder.forward(decoder_input, decoder_hiddens ) #CODE_BLANK_7
                 
                 #Add loss for each decoder output and target_tensor for each word in target language
                 loss += criterion(decoder_output, target_tensor_step[di].view(1))
@@ -129,7 +130,7 @@ def train(input_tensor, target_tensor, mask_input, mask_target, encoder, decoder
                 decoder_input =  target_tensor_step[di]# Teacher forcing
        
         #find loss normalised with batch size in the below code blank 8
-        loss = #Code_BLANK_8
+        loss = loss/batch_size #Code_BLANK_8 CHECK 
 
     else:
         for step_idx in range(batch_size):
@@ -142,26 +143,26 @@ def train(input_tensor, target_tensor, mask_input, mask_target, encoder, decoder
 
             # Without teacher forcing: use its own predictions as the next input
             for di in range(target_length):
-                decoder_output, decoder_hidden = #CODE_BLANK_9
+                decoder_output, decoder_hidden = decoder.forward(decoder_input, decoder_hidden) #CODE_BLANK_9
                 topv, topi = decoder_output.topk(1)
                 decoder_input = topi.squeeze().detach()  # detach from history as input
 
                 loss += criterion(decoder_output, target_tensor_step[di].view(1))
                 if decoder_input.item() == EOS_token:
                     break
-        loss = #CODE_BLANK_10
+        loss = loss/batch_size #CODE_BLANK_10
 
     #Call Backward prop for loss
-   #CODE_BLANK_11
+    loss.backward()#CODE_BLANK_11
 
     #Call Weight update for optimizers. Note that we are doing this after each batch is passed
     #The bridge layer is not being used since we dont have a bidirectional network and hence no weight updation is needed.
     
-    #CODE_BLANK_12
-    #CODE_BLANK_13
+    encoder_optimizer.step()#CODE_BLANK_12
+    decoder_optimizer.step()#CODE_BLANK_13
 
     #Return loss value normalised with target length
-    return #CODE_BLANK_14
+    return loss/target_length #CODE_BLANK_14
 
 
 ######################################################################
@@ -218,7 +219,7 @@ def trainIters(trainloader,encoder, decoder, bridge,device,bidirectional=False,t
         for iteration,_ in enumerate(trainloader, 1):
 
             #Assign the data to training_pair
-            training_pair = #CODE_BLANK_2
+            training_pair =  #CODE_BLANK_2
 
             # Assign the input tensor 
             input_tensor = #CODE_BLANK_3
