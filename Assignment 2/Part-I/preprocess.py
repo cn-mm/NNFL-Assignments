@@ -145,8 +145,8 @@ def get_dataset(batch_size=2, types="train", shuffle=True, num_workers=1, pin_me
     lines['length_hindi_sentence'] = lines['hindi_sentence'].apply(lambda x: len(x.split())) #CODE_BLANK_5
 
     #Remove all the sentences with lengths greater than or equal to max_length
-    lines = lines[lines['length_english_sentence']< int(config["MAX_LENGTH"])] #CODE_BLANK_6
-    lines = lines[lines['length_hindi_sentence']< int(config["MAX_LENGTH"])] #CODE_BLANK_7
+    lines = lines[lines['length_english_sentence']< MAX_LENGTH] #CODE_BLANK_6
+    lines = lines[lines['length_hindi_sentence']< MAX_LENGTH] #CODE_BLANK_7
 
     #Get List of english words
     list_eng_words = get_vocab(lines['english_sentence']) # CODE_BLANK_8      
@@ -169,9 +169,9 @@ def get_dataset(batch_size=2, types="train", shuffle=True, num_workers=1, pin_me
     #Convert the sentences to tensors using dictionaries created above
     #English tensor in input_tensor
     # NEED TO CORRECT THIS 
-    input_tensor = torch.tensor(word2idx_eng[w] for w in lines['english_sentence']) #CODE_BLANK_14 
+    input_tensor = convert_to_tensor(word2idx_eng, lines['english_sentences'])#CODE_BLANK_14 
     #Hindi tensor in output_tensor
-    output_tensor = torch.tensor(word2idx_hin[w] for w in lines['hindi_sentence']) #CODE_BLANK_15
+    output_tensor = convert_to_tensor(word2idx_hin, lines['hindi_sentences'])# #CODE_BLANK_15
 
     #Calling the split function and doing a 80-20 split on the input and target tensors.
     input_tensor_train, input_tensor_val, target_tensor_train, target_tensor_val = train_test_split(

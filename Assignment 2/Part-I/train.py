@@ -37,7 +37,7 @@ def train(input_tensor, target_tensor, mask_input, mask_target, encoder, decoder
         """
         ##Write your code below
         #Call the method initHidden of encoder class
-        encoder_hidden = #CODE_BLANK_1
+        encoder_hidden = encoder.initHidden(device)#CODE_BLANK_1
 
         """
         We will take the particular batch input and will select only those values which are non-zero.
@@ -53,14 +53,15 @@ def train(input_tensor, target_tensor, mask_input, mask_target, encoder, decoder
         
 
         #initializing output tensor for encoder output with size (batch_size, max_length, encoder.hidden_size) and assign it to appropriate device
+        # initialise the encoder outputs to zero tensor, use appropriate arguments to get the correct shape using batch_size, max_length, encoder.hidden_size.
         #In this case it must be (32,20,256)
-        encoder_outputs = #CODE_BLANK_2
+        encoder_outputs = torch.zeros(batch_size, max_length, encoder.hidden_size) #CODE_BLANK_2
 
         #Iterating over each input word individually
         for ei in range(input_length):
 
             #Call the encoder with input as the input tensor step at index ei and hidden as the hidden state of last stage
-            encoder_output, encoder_hidden = #Code_BLANK_3
+            encoder_output, encoder_hidden = encoder.forward(input_tensor_step[ei], encoder_hidden ) #Code_BLANK_3
             
             #Store encoder output at each word at each batch in the encoder outputs tensor
             encoder_outputs[step_idx, ei, :] = encoder_output[0, 0]

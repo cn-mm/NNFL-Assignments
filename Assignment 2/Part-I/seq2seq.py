@@ -93,7 +93,7 @@ class EncoderRNN(nn.Module):
 
         ##Write your code below
         #Feed the input to the embedding layer defined above and convert it to size (1,1,hidden size)
-        embedded = self.embedding(input, hidden) 
+        embedded = self.embedding(input) 
         embedded = embedded.view(1, 1, -1)#CODE_BLANK_1
         rnn_input = embedded
 
@@ -103,8 +103,8 @@ class EncoderRNN(nn.Module):
             # c_n of shape (num_layers * num_directions, batch, hidden_size): tensor containing the cell state
 
         #call the lstm layer. 
-        # CHECK         
-        output, (h_n, c_n) = self.lstm(rnn_input) #CODE_BLANK_2
+        # note to self: hidden = (hidden_state, cell_state)
+        output, (h_n, c_n) = self.lstm(rnn_input, hidden) #CODE_BLANK_2
         # return the ouput,(hidden_State,cell_State)
         return output, (h_n, c_n) #CODEBLANK3
 
@@ -139,10 +139,10 @@ class DecoderRNN(nn.Module):
         ##Write your code below
 
         #Call the embedding layer defined above and convert it to shape (1,1,hidden_Size)
-        output = self.embedding(input, hidden) 
+        output = self.embedding(input) 
         output = output.view(1, 1, -1) #CODE_BLANK_1
         #Call the Lstm layer defined above
-        output, (h_n, c_n) = self.lstm(output) #CODE_BLANK_2
+        output, (h_n, c_n) = self.lstm(output, hidden) #CODE_BLANK_2
         #Call the output layer on the first element of the output
         output = self.out(output) #CODE_BLANK_3
 
