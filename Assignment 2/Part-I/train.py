@@ -31,6 +31,7 @@ def train(input_tensor, target_tensor, mask_input, mask_target, encoder, decoder
 
     
     for step_idx in range(batch_size):
+        print("STEPIDX", step_idx)
         
         """
         Encoder is an object of class EncoderRNN. 
@@ -43,7 +44,6 @@ def train(input_tensor, target_tensor, mask_input, mask_target, encoder, decoder
         We will take the particular batch input and will select only those values which are non-zero.
         So select the input tensor value for this particular batch and select only the non zero values
         """
-
         #Selecting the non-zero values from the step tensor after initialising it
         input_tensor_step = input_tensor[:, step_idx][input_tensor[:, step_idx] != 0]
 
@@ -82,6 +82,8 @@ def train(input_tensor, target_tensor, mask_input, mask_target, encoder, decoder
 
         #Appending the hidden states for each layer to the last hidden states.
         encoder_hiddens_last.append(encoder_hidden)
+
+        print(step_idx, "Full cross for one iter")
 
     #################
     #### DECODER ####
@@ -219,6 +221,7 @@ def trainIters(trainloader,encoder, decoder, bridge,device,bidirectional=False,t
 
             #Assign the data to training_pair
             training_pair = data #CODE_BLANK_2
+            print(type(data), data[0].shape, data[1].shape)
             
             # Assign the input tensor 
             input_tensor = training_pair[0] #CODE_BLANK_3
@@ -237,7 +240,7 @@ def trainIters(trainloader,encoder, decoder, bridge,device,bidirectional=False,t
             
             #The train function returns the loss for each batch
             #Call the train function and fill in the arguments from above
-            loss = train(input_tensor, target_tensor, mask_input, mask_target, encoder, decoder, bridge, encoder_optimizer, decoder_optimizer, bridge_optimizer,device, criterion, max_length,bidirectional=False,teacher_forcing=True) #Enter your arguments here, Dont change the below arguments
+            loss = train(input_tensor, target_tensor, mask_input, mask_target, encoder, decoder, bridge, encoder_optimizer, decoder_optimizer, bridge_optimizer,device, criterion, max_length, batch_size = batch_size, bidirectional=False,teacher_forcing=True) #Enter your arguments here, Dont change the below arguments
             
             #Printing losses every few iterations
             print_loss_total += loss
