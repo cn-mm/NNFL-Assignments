@@ -218,7 +218,7 @@ def trainIters(trainloader,encoder, decoder, bridge,device,bidirectional=False,t
         for iteration,data in enumerate(trainloader, 1):
 
             #Assign the data to training_pair
-            training_pair =  data[iteration] #CODE_BLANK_2
+            training_pair = data #CODE_BLANK_2
 
             # Assign the input tensor 
             input_tensor = training_pair[0] #CODE_BLANK_3

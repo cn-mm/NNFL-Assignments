@@ -74,7 +74,7 @@ def evaluateRandomly(encoder, decoder, bridge,device,testset,idx2word_en,idx2wor
     for i,data in enumerate(testset,1):
         j=j+1
         #Assign the value of data to pair
-        pair = data[i] #CODE_BLANK_1
+        pair = data #CODE_BLANK_1
 
         #Getting the tensors and mask in the desired format
         input_tensor, mask_input = reformat_tensor_mask(pair[0].view(1,1,-1))
