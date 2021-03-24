@@ -31,7 +31,7 @@ def train(input_tensor, target_tensor, mask_input, mask_target, encoder, decoder
 
     
     for step_idx in range(batch_size):
-        print("STEPIDX", step_idx)
+        # print("STEPIDX", step_idx)
         
         """
         Encoder is an object of class EncoderRNN. 
@@ -83,8 +83,6 @@ def train(input_tensor, target_tensor, mask_input, mask_target, encoder, decoder
         #Appending the hidden states for each layer to the last hidden states.
         encoder_hiddens_last.append(encoder_hidden)
 
-        print(step_idx, "Full cross for one iter")
-
     #################
     #### DECODER ####
     #################
@@ -93,7 +91,7 @@ def train(input_tensor, target_tensor, mask_input, mask_target, encoder, decoder
     decoder_input = torch.tensor([[SOS_token]], device=device) #CODE_BLANK_5 ** List list SOS CHECK 
 
     #Assign the initial decoder hidden states as the last hidden states of encoder retrieved above
-    decoder_hiddens = (hn, cn) #CODE_BLANK_6 CHECK 
+    decoder_hiddens = [encoder_hn_last_layer, encoder_cn_last_layer] #CODE_BLANK_6 CHECK 
 
     # teacher_forcing uses the real target outputs as the next input
     # rather than using the decoder's prediction.
@@ -121,7 +119,7 @@ def train(input_tensor, target_tensor, mask_input, mask_target, encoder, decoder
             for di in range(target_length):
 
                 #Call the decoder object and pass the decoder input and hidden state as the hidden state
-                decoder_output, decoder_hidden = decoder.forward(decoder_input, decoder_hiddens ) #CODE_BLANK_7
+                decoder_output, decoder_hidden = decoder.forward(decoder_input, decoder_hidden) #CODE_BLANK_7
                 
                 #Add loss for each decoder output and target_tensor for each word in target language
                 loss += criterion(decoder_output, target_tensor_step[di].view(1))
@@ -221,7 +219,6 @@ def trainIters(trainloader,encoder, decoder, bridge,device,bidirectional=False,t
 
             #Assign the data to training_pair
             training_pair = data #CODE_BLANK_2
-            print(type(data), data[0].shape, data[1].shape)
             
             # Assign the input tensor 
             input_tensor = training_pair[0] #CODE_BLANK_3
