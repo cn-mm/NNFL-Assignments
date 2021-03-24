@@ -176,7 +176,7 @@ def get_dataset(batch_size=2, types="train", shuffle=True, num_workers=1, pin_me
     #English tensor in input_tensor
     input_tensor = convert_to_tensor(word2idx_eng, lines['english_sentence'])#CODE_BLANK_14 
     #Hindi tensor in output_tensor
-    output_tensor = convert_to_tensor(word2idx_hin, lines['hindi_sentence']) #CODE_BLANK_15
+    target_tensor = convert_to_tensor(word2idx_hin, lines['hindi_sentence']) #CODE_BLANK_15
 
     #Calling the split function and doing a 80-20 split on the input and target tensors.
     input_tensor_train, input_tensor_val, target_tensor_train, target_tensor_val = train_test_split(
