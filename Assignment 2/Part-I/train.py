@@ -37,7 +37,7 @@ def train(input_tensor, target_tensor, mask_input, mask_target, encoder, decoder
         """
         ##Write your code below
         #Call the method initHidden of encoder class
-        encoder_hidden = encoder.initHidden(device)#CODE_BLANK_1
+        encoder_hidden = encoder.initHidden(device) #CODE_BLANK_1
 
         """
         We will take the particular batch input and will select only those values which are non-zero.
@@ -52,16 +52,16 @@ def train(input_tensor, target_tensor, mask_input, mask_target, encoder, decoder
 
         
 
-        #initializing output tensor for encoder output with size (batch_size, max_length, encoder.hidden_size) and assign it to appropriate device
+        # initializing output tensor for encoder output with size (batch_size, max_length, encoder.hidden_size) and assign it to appropriate device
         # initialise the encoder outputs to zero tensor, use appropriate arguments to get the correct shape using batch_size, max_length, encoder.hidden_size.
-        #In this case it must be (32,20,256)
-        encoder_outputs = torch.zeros(batch_size, max_length, encoder.hidden_size) #CODE_BLANK_2
+        # In this case it must be (32,20,256)
+        encoder_outputs = torch.zeros(batch_size, max_length, encoder.hidden_size).to(device) #CODE_BLANK_2
 
         #Iterating over each input word individually
         for ei in range(input_length):
 
             #Call the encoder with input as the input tensor step at index ei and hidden as the hidden state of last stage
-            encoder_output, encoder_hidden = encoder.forward(input_tensor_step[ei], encoder_hidden ) #Code_BLANK_3
+            encoder_output, encoder_hidden = encoder.forward(input_tensor_step[ei], encoder_hidden) #Code_BLANK_3
             
             #Store encoder output at each word at each batch in the encoder outputs tensor
             encoder_outputs[step_idx, ei, :] = encoder_output[0, 0]
@@ -88,11 +88,10 @@ def train(input_tensor, target_tensor, mask_input, mask_target, encoder, decoder
     #################
 
     #Assign the decoder input as a torch tensor with value [SOS]
-    # CHECK 
-    decoder_input = torch.tensor([SOS_token]) #CODE_BLANK_5
+    decoder_input = torch.tensor([[SOS_token]], device=device) #CODE_BLANK_5 ** List list SOS CHECK 
 
     #Assign the initial decoder hidden states as the last hidden states of encoder retrieved above
-    decoder_hiddens = (hn, cn) #CODE_BLANK_6
+    decoder_hiddens = (hn, cn) #CODE_BLANK_6 CHECK 
 
     # teacher_forcing uses the real target outputs as the next input
     # rather than using the decoder's prediction.
@@ -216,19 +215,19 @@ def trainIters(trainloader,encoder, decoder, bridge,device,bidirectional=False,t
         
        
         #CODE_BLANK_1 replace "_,_ " the for loop below correctly
-        for iteration,_ in enumerate(trainloader, 1):
+        for iteration,inp_tensor,out_tensor in enumerate(trainloader, 1):
 
             #Assign the data to training_pair
-            training_pair =  #CODE_BLANK_2
+            training_pair =  [inp_tensor,out_tensor ] #CODE_BLANK_2
 
             # Assign the input tensor 
-            input_tensor = #CODE_BLANK_3
+            input_tensor = training_pair[0] #CODE_BLANK_3
 
             #This will process the tensor and returns in required format
             input_tensor, mask_input = reformat_tensor_mask(input_tensor)
 
             # Assign the target tensor
-            target_tensor = #CODE_BLANK_4
+            target_tensor = training_pair[1] #CODE_BLANK_4
             target_tensor, mask_target = reformat_tensor_mask(target_tensor)
             
             #Moving the tensors to gpus for faster calculations

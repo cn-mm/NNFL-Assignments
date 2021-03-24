@@ -78,7 +78,7 @@ def token_idx(words: List) -> Dict:
     '''
     dictionary = {"SOS" : 1, "EOS" : 2}
     for ind, word in enumerate(words):
-      dictionary[word] = id + 2
+      dictionary[word] = ind + 3
     return dictionary
     # pass
 
@@ -87,7 +87,10 @@ def token_idx(words: List) -> Dict:
 def idx_token(wor2idx: Dict) -> Dict:
     #Write your code here and remove the next line which says pass before you submit
     # reverse of the prev function 
-    return {ind:word for word,ind in wor2idx.items()}
+    inv_dictionary = {}
+    for word, ind in wor2idx.items():
+      inv_dictionary[ind] = word
+    return inv_dictionary
     # pass
  
 
