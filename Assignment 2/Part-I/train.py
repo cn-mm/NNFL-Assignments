@@ -237,8 +237,7 @@ def trainIters(trainloader,encoder, decoder, bridge,device,bidirectional=False,t
             
             #The train function returns the loss for each batch
             #Call the train function and fill in the arguments from above
-            loss = train(#Enter your arguments here, Dont change the below arguments
-                ,bidirectional=False,teacher_forcing=True)
+            loss = train( input_tensor, target_tensor, mask_input, mask_target, encoder, decoder, bridge, encoder_optimizer, decoder_optimizer, bridge_optimizer,device, criterion, max_length,bidirectional=False,teacher_forcing=True) #Enter your arguments here, Dont change the below arguments
             
             #Printing losses every few iterations
             print_loss_total += loss
