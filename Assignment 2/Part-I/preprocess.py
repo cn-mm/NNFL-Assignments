@@ -155,16 +155,16 @@ def get_dataset(batch_size=2, types="train", shuffle=True, num_workers=1, pin_me
     lines = lines[lines['length_hindi_sentence']< MAX_LENGTH] #CODE_BLANK_7
 
     #Get List of english words
-    list_eng_words = get_vocab(lines['english_sentence']) # CODE_BLANK_8      
+    english_words = get_vocab(lines['english_sentence']) # CODE_BLANK_8      
     
     #Get List of Hindi Words
-    lis_hindi_words = get_vocab(lines['hindi_sentence']) #CODE_BLANK_9
+    hindi_words = get_vocab(lines['hindi_sentence']) #CODE_BLANK_9
 
     #Get word2idx_eng for english
-    word2idx_eng = token_idx(list_eng_words) #CODE_BLANK_10
+    word2idx_eng = token_idx(english_words) #CODE_BLANK_10
     
     #Get word2idx_hin for hindi
-    word2idx_hin = token_idx(lis_hindi_words) #CODE_BLANK_11
+    word2idx_hin = token_idx(hindi_words) #CODE_BLANK_11
 
     #get idx2word_eng for english
     idx2word_eng = idx_token(word2idx_eng) #CODE_BLANK_12

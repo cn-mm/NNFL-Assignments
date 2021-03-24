@@ -215,10 +215,10 @@ def trainIters(trainloader,encoder, decoder, bridge,device,bidirectional=False,t
         
        
         #CODE_BLANK_1 replace "_,_ " the for loop below correctly
-        for iteration,inp_tensor,out_tensor in enumerate(trainloader, 1):
+        for iteration,data in enumerate(trainloader, 1):
 
             #Assign the data to training_pair
-            training_pair =  [inp_tensor,out_tensor ] #CODE_BLANK_2
+            training_pair =  [data[0],data[1]] #CODE_BLANK_2
 
             # Assign the input tensor 
             input_tensor = training_pair[0] #CODE_BLANK_3
