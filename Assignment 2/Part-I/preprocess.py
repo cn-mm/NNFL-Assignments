@@ -1,5 +1,5 @@
 from typing import List, Dict
-import unidecode
+# import unidecode
 import string
 import pandas as pd
 import re
@@ -27,7 +27,7 @@ def preprocess(sentence: str, hindi=False) -> str:
     #convert the sentence into lower cases
     sentence = sentence.lower() #CODE_BLANK_1. 
     # remove accented chars such as in cafe
-    sentence = unidecode.unidecode(sentence)
+    # sentence = unidecode.unidecode(sentence)
     # remove punctuation
     sentence = sentence.translate(str.maketrans('', '', string.punctuation))
     # remove digits
