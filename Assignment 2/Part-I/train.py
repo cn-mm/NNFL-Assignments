@@ -91,7 +91,7 @@ def train(input_tensor, target_tensor, mask_input, mask_target, encoder, decoder
     decoder_input = torch.tensor([[SOS_token]], device=device) #CODE_BLANK_5 ** List list SOS CHECK 
 
     #Assign the initial decoder hidden states as the last hidden states of encoder retrieved above
-    decoder_hiddens = [encoder_hn_last_layer, encoder_cn_last_layer] #CODE_BLANK_6 CHECK 
+    decoder_hiddens = encoder_hiddens_last #CODE_BLANK_6 
 
     # teacher_forcing uses the real target outputs as the next input
     # rather than using the decoder's prediction.

@@ -129,6 +129,7 @@ class DecoderRNN(nn.Module):
         self.batch_size = batch_size
         self.num_layers = num_layers
         self.hidden_size = hidden_size
+        self.output_size = output_size #### additional
         self.embedding = nn.Embedding(output_size, hidden_size)
         self.lstm = nn.LSTM(input_size=hidden_size,
                             hidden_size=hidden_size, num_layers=1)
@@ -142,7 +143,7 @@ class DecoderRNN(nn.Module):
         #Call the Lstm layer defined above
         output, (h_n, c_n) = self.lstm(output, hidden) #CODE_BLANK_2
         #Call the output layer on the first element of the output
-        output = self.out(output) #CODE_BLANK_3
+        output = self.out(output[:,-1]) #CODE_BLANK_3
 
          # return the ouput,(hidden_State,cell_State)
         return output, (h_n, c_n)
