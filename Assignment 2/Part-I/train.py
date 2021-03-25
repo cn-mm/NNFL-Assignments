@@ -31,7 +31,6 @@ def train(input_tensor, target_tensor, mask_input, mask_target, encoder, decoder
 
     
     for step_idx in range(batch_size):
-        # print("STEPIDX", step_idx)
         
         """
         Encoder is an object of class EncoderRNN. 
