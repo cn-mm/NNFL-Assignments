@@ -48,8 +48,6 @@ def train(input_tensor, target_tensor, mask_input, mask_target, encoder, decoder
 
         #After filtering out non-zero values, the size must be less than or equal to max_length.
         input_length = input_tensor_step.size(0)
-        # print("Max: ", torch.max(input_tensor_step))
-        # print("Min: ", torch.min(input_tensor_step))
 
         
 
@@ -89,7 +87,7 @@ def train(input_tensor, target_tensor, mask_input, mask_target, encoder, decoder
     #################
 
     #Assign the decoder input as a torch tensor with value [SOS]
-    decoder_input = torch.tensor([[SOS_token]], device=device) #CODE_BLANK_5 ** List list SOS CHECK 
+    decoder_input = torch.tensor([[SOS_token]], device=device) #CODE_BLANK_5 
 
     #Assign the initial decoder hidden states as the last hidden states of encoder retrieved above
     decoder_hiddens = encoder_hiddens_last #CODE_BLANK_6 

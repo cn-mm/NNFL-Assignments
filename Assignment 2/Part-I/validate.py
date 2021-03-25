@@ -80,7 +80,9 @@ def evaluateRandomly(encoder, decoder, bridge,device,testset,idx2word_en,idx2wor
         input_tensor, mask_input = reformat_tensor_mask(pair[0].view(1,1,-1))
         
         #get the non zero values from the input tensor
-        input_tensor = pair[0] #CODE_BLANK_2
+        input_tensor = input_tensor[:,0][input_tensor[:,0] !=0] #CODE_BLANK_2 a[a.nonzero()].
+        # input_tensor_step = input_tensor[:, step_idx][input_tensor[:, step_idx] != 0]
+        
         
         #Getting the ground truth tensors in their desired format
         output_tensor, mask_output = reformat_tensor_mask(pair[1].view(1,1,-1))
@@ -103,7 +105,7 @@ def evaluateRandomly(encoder, decoder, bridge,device,testset,idx2word_en,idx2wor
         
         
         #CAlling the evaluate method
-        output_words = evaluate(encoder, decoder, bridge, input_tensor,device,index2word_hin)  #CODE_BlANK_6
+        output_words = evaluate(encoder, decoder, bridge, input_tensor,device,idx2word_hin)  #CODE_BlANK_6
 
         #Joining the predicted output to form the predicted sentence
         output_sentence = ' '.join(output_words)
