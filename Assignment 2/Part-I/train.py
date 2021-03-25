@@ -48,6 +48,8 @@ def train(input_tensor, target_tensor, mask_input, mask_target, encoder, decoder
 
         #After filtering out non-zero values, the size must be less than or equal to max_length.
         input_length = input_tensor_step.size(0)
+        # print("Max: ", torch.max(input_tensor_step))
+        # print("Min: ", torch.min(input_tensor_step))
 
         
 

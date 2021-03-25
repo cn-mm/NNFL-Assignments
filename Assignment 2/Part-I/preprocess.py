@@ -76,10 +76,11 @@ def token_idx(words: List) -> Dict:
     '''
         input of words ['a','b','c'] -> output should be {'a': 1, 'b' : 2, 'c': 3}
     '''
-    dictionary = {"SOS" : 1, "EOS" : 2}
-    for ind, word in enumerate(words):
-      dictionary[word] = ind + 3
-    return dictionary
+    # dictionary = {"SOS" : 1, "EOS" : 2}
+    # for ind, word in enumerate(words):
+    #   dictionary[word] = ind + 3
+    # return dictionary
+    return {word:ind for ind,word in enumerate(words)}
     # pass
 
 #(0.5 marks)
