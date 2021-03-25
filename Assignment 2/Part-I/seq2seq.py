@@ -146,6 +146,7 @@ class DecoderRNN(nn.Module):
         output = self.out(output[:,-1]) #CODE_BLANK_3
 
          # return the ouput,(hidden_State,cell_State)
+         print("returning")
         return output, (h_n, c_n)
 
     #Function to initialize the hidden state and cell states for decoder.
